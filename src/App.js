@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 function App() {
+
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    getApi();
+  })
+
+  const getApi = async () => {
+    const res = await axios.get('https://api.resumatorapi.com/v1/applicants?apikey=2IacfqOTZVmQyjmhKmIypBvuwhfzSjFE')
+    const data = await res.data
+    console.log(data);
+    setData(data)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {data.map((item)=>{
+        return (
+          <div>
+            <p>NOME : {item.first_name}</p>
+            <p>SOBRENOME : {item.last_name}</p>
+            <p>TELEFONE : {item.prospect_phone}</p>
+            <p>DATA : {item.apply_date}</p>
+            <p>PROFISÂO : {item.job_title}</p>
+          </div>
+        )
+      })}
     </div>
   );
 }
